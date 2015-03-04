@@ -33,6 +33,6 @@ begin
 		variable clk_count: integer:= 0;
 	begin
 		if (clk'event and clk = '1') then
-		end if;
+	end if;
 	end process;
 end main;
