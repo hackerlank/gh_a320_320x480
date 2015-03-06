@@ -1,9 +1,11 @@
-Analysis & Synthesis Status : Successful - Fri Mar 06 18:00:03 2015
+Fitter Status : Successful - Fri Mar 06 18:00:07 2015
 Quartus II Version : 9.1 Build 222 10/21/2009 SJ Full Version
 Revision Name : a320hd
 Top-level Entity Name : a320hd
 Family : MAX II
-Total logic elements : 416
-Total pins : 46
+Device : EPM570T100C5
+Timing Models : Final
+Total logic elements : 416 / 570 ( 73 % )
+Total pins : 46 / 76 ( 61 % )
 Total virtual pins : 0
 UFM blocks : 0 / 1 ( 0 % )

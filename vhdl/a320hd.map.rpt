@@ -1,5 +1,5 @@
 Analysis & Synthesis report for a320hd
-Wed Mar 04 17:58:22 2015
+Fri Mar 06 18:00:03 2015
 Quartus II Version 9.1 Build 222 10/21/2009 SJ Full Version
 
 
@@ -12,8 +12,11 @@ Quartus II Version 9.1 Build 222 10/21/2009 SJ Full Version
   4. Analysis & Synthesis Source Files Read
   5. Analysis & Synthesis Resource Usage Summary
   6. Analysis & Synthesis Resource Utilization by Entity
-  7. General Register Statistics
-  8. Analysis & Synthesis Messages
+  7. State Machine - |a320hd|state
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 11. Analysis & Synthesis Messages
 
 
 
@@ -39,12 +42,12 @@ applicable agreement for further details.
 +------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                           ;
 +-----------------------------+------------------------------------------+
-; Analysis & Synthesis Status ; Successful - Wed Mar 04 17:58:22 2015    ;
+; Analysis & Synthesis Status ; Successful - Fri Mar 06 18:00:03 2015    ;
 ; Quartus II Version          ; 9.1 Build 222 10/21/2009 SJ Full Version ;
 ; Revision Name               ; a320hd                                   ;
 ; Top-level Entity Name       ; a320hd                                   ;
 ; Family                      ; MAX II                                   ;
-; Total logic elements        ; 0                                        ;
+; Total logic elements        ; 416                                      ;
 ; Total pins                  ; 46                                       ;
 ; Total virtual pins          ; 0                                        ;
 ; UFM blocks                  ; 0 / 1 ( 0 % )                            ;
@@ -132,28 +135,33 @@ applicable agreement for further details.
 +---------------------------------------------+-------+
 ; Resource                                    ; Usage ;
 +---------------------------------------------+-------+
-; Total logic elements                        ; 0     ;
-;     -- Combinational with no register       ; 0     ;
-;     -- Register only                        ; 0     ;
-;     -- Combinational with a register        ; 0     ;
+; Total logic elements                        ; 416   ;
+;     -- Combinational with no register       ; 294   ;
+;     -- Register only                        ; 1     ;
+;     -- Combinational with a register        ; 121   ;
 ;                                             ;       ;
 ; Logic element usage by number of LUT inputs ;       ;
-;     -- 4 input functions                    ; 0     ;
-;     -- 3 input functions                    ; 0     ;
-;     -- 2 input functions                    ; 0     ;
-;     -- 1 input functions                    ; 0     ;
+;     -- 4 input functions                    ; 226   ;
+;     -- 3 input functions                    ; 31    ;
+;     -- 2 input functions                    ; 155   ;
+;     -- 1 input functions                    ; 3     ;
 ;     -- 0 input functions                    ; 0     ;
 ;                                             ;       ;
 ; Logic elements by mode                      ;       ;
-;     -- normal mode                          ; 0     ;
-;     -- arithmetic mode                      ; 0     ;
+;     -- normal mode                          ; 324   ;
+;     -- arithmetic mode                      ; 92    ;
 ;     -- qfbk mode                            ; 0     ;
 ;     -- register cascade mode                ; 0     ;
-;     -- synchronous clear/load mode          ; 0     ;
+;     -- synchronous clear/load mode          ; 6     ;
 ;     -- asynchronous clear/load mode         ; 0     ;
 ;                                             ;       ;
-; Total registers                             ; 0     ;
+; Total registers                             ; 122   ;
+; Total logic cells in carry chains           ; 95    ;
 ; I/O pins                                    ; 46    ;
+; Maximum fan-out node                        ; clk   ;
+; Maximum fan-out                             ; 122   ;
+; Total fan-out                               ; 1542  ;
+; Average fan-out                             ; 3.34  ;
 +---------------------------------------------+-------+
 
 
@@ -162,9 +170,36 @@ applicable agreement for further details.
 +----------------------------+-------------+--------------+------------+------+--------------+--------------+-------------------+------------------+-----------------+------------+---------------------+--------------+
 ; Compilation Hierarchy Node ; Logic Cells ; LC Registers ; UFM Blocks ; Pins ; Virtual Pins ; LUT-Only LCs ; Register-Only LCs ; LUT/Register LCs ; Carry Chain LCs ; Packed LCs ; Full Hierarchy Name ; Library Name ;
 +----------------------------+-------------+--------------+------------+------+--------------+--------------+-------------------+------------------+-----------------+------------+---------------------+--------------+
-; |a320hd                    ; 0 (0)       ; 0            ; 0          ; 46   ; 0            ; 0 (0)        ; 0 (0)             ; 0 (0)            ; 0 (0)           ; 0 (0)      ; |a320hd             ; work         ;
+; |a320hd                    ; 416 (416)   ; 122          ; 0          ; 46   ; 0            ; 294 (294)    ; 1 (1)             ; 121 (121)        ; 95 (95)         ; 0 (0)      ; |a320hd             ; work         ;
 +----------------------------+-------------+--------------+------------+------+--------------+--------------+-------------------+------------------+-----------------+------------+---------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++-----------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |a320hd|state                                                                                                                 ;
++----------------------+-------------+----------------------+-------------------+------------+----------------+----------------+----------------+
+; Name                 ; state.delay ; state.gui_draw_color ; state.gui_set_pos ; state.init ; state.powerup3 ; state.powerup2 ; state.powerup1 ;
++----------------------+-------------+----------------------+-------------------+------------+----------------+----------------+----------------+
+; state.powerup1       ; 0           ; 0                    ; 0                 ; 0          ; 0              ; 0              ; 0              ;
+; state.powerup2       ; 0           ; 0                    ; 0                 ; 0          ; 0              ; 1              ; 1              ;
+; state.powerup3       ; 0           ; 0                    ; 0                 ; 0          ; 1              ; 0              ; 1              ;
+; state.init           ; 0           ; 0                    ; 0                 ; 1          ; 0              ; 0              ; 1              ;
+; state.gui_set_pos    ; 0           ; 0                    ; 1                 ; 0          ; 0              ; 0              ; 1              ;
+; state.gui_draw_color ; 0           ; 1                    ; 0                 ; 0          ; 0              ; 0              ; 1              ;
+; state.delay          ; 1           ; 0                    ; 0                 ; 0          ; 0              ; 0              ; 1              ;
++----------------------+-------------+----------------------+-------------------+------------+----------------+----------------+----------------+
+
+
++--------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                             ;
++---------------------------------------+----------------------------------------+
+; Register name                         ; Reason for Removal                     ;
++---------------------------------------+----------------------------------------+
+; new_rd~reg0                           ; Stuck at VCC due to stuck port data_in ;
+; color[0]                              ; Stuck at GND due to stuck port data_in ;
+; Total Number of Removed Registers = 2 ;                                        ;
++---------------------------------------+----------------------------------------+
 
 
 +------------------------------------------------------+
@@ -172,14 +207,31 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 0     ;
+; Total registers                              ; 122   ;
 ; Number of registers using Synchronous Clear  ; 0     ;
-; Number of registers using Synchronous Load   ; 0     ;
+; Number of registers using Synchronous Load   ; 6     ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 0     ;
+; Number of registers using Clock Enable       ; 77    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; 5:1                ; 4 bits    ; 12 LEs        ; 4 LEs                ; 8 LEs                  ; Yes        ; |a320hd|new_data[7]~reg0   ;
+; 7:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |a320hd|new_data[5]~reg0   ;
+; 12:1               ; 31 bits   ; 248 LEs       ; 31 LEs               ; 217 LEs                ; Yes        ; |a320hd|color[22]          ;
+; 14:1               ; 32 bits   ; 288 LEs       ; 32 LEs               ; 256 LEs                ; Yes        ; |a320hd|cmd_index[15]      ;
+; 78:1               ; 3 bits    ; 156 LEs       ; 99 LEs               ; 57 LEs                 ; Yes        ; |a320hd|new_data[8]~reg0   ;
+; 78:1               ; 3 bits    ; 156 LEs       ; 108 LEs              ; 48 LEs                 ; Yes        ; |a320hd|new_data[13]~reg0  ;
+; 11:1               ; 31 bits   ; 217 LEs       ; 31 LEs               ; 186 LEs                ; Yes        ; |a320hd|clk_count[22]      ;
+; 24:1               ; 5 bits    ; 80 LEs        ; 20 LEs               ; 60 LEs                 ; No         ; |a320hd|Selector37         ;
+; 26:1               ; 2 bits    ; 34 LEs        ; 4 LEs                ; 30 LEs                 ; No         ; |a320hd|Selector38         ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
 
 
 +-------------------------------+
@@ -188,44 +240,18 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II Analysis & Synthesis
     Info: Version 9.1 Build 222 10/21/2009 SJ Full Version
-    Info: Processing started: Wed Mar 04 17:58:21 2015
+    Info: Processing started: Fri Mar 06 17:59:59 2015
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off a320hd -c a320hd
 Info: Only one processor detected - disabling parallel compilation
 Info: Found 2 design units, including 1 entities, in source file a320hd.vhd
     Info: Found design unit 1: a320hd-main
     Info: Found entity 1: a320hd
 Info: Elaborating entity "a320hd" for the top level hierarchy
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(6): used implicit default value for signal "new_data" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(7): used implicit default value for signal "new_cs" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(8): used implicit default value for signal "new_rs" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(9): used implicit default value for signal "new_wr" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(10): used implicit default value for signal "new_rd" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(11): used implicit default value for signal "new_rst" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(12): used implicit default value for signal "new_frame" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at a320hd.vhd(20): used implicit default value for signal "new_frame" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
 Warning: Output pins are stuck at VCC or GND
-    Warning (13410): Pin "new_data[15]" is stuck at GND
-    Warning (13410): Pin "new_data[14]" is stuck at GND
-    Warning (13410): Pin "new_data[13]" is stuck at GND
-    Warning (13410): Pin "new_data[12]" is stuck at GND
-    Warning (13410): Pin "new_data[11]" is stuck at GND
-    Warning (13410): Pin "new_data[10]" is stuck at GND
-    Warning (13410): Pin "new_data[9]" is stuck at GND
-    Warning (13410): Pin "new_data[8]" is stuck at GND
-    Warning (13410): Pin "new_data[7]" is stuck at GND
-    Warning (13410): Pin "new_data[6]" is stuck at GND
-    Warning (13410): Pin "new_data[5]" is stuck at GND
-    Warning (13410): Pin "new_data[4]" is stuck at GND
-    Warning (13410): Pin "new_data[3]" is stuck at GND
-    Warning (13410): Pin "new_data[2]" is stuck at GND
-    Warning (13410): Pin "new_data[1]" is stuck at GND
-    Warning (13410): Pin "new_data[0]" is stuck at GND
-    Warning (13410): Pin "new_cs" is stuck at GND
-    Warning (13410): Pin "new_rs" is stuck at GND
-    Warning (13410): Pin "new_wr" is stuck at GND
-    Warning (13410): Pin "new_rd" is stuck at GND
-    Warning (13410): Pin "new_rst" is stuck at GND
+    Warning (13410): Pin "new_rd" is stuck at VCC
     Warning (13410): Pin "new_frame" is stuck at GND
-Warning: Design contains 24 input pin(s) that do not drive logic
+Warning: Design contains 23 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "old_data[15]"
     Warning (15610): No output dependent on input pin "old_data[14]"
     Warning (15610): No output dependent on input pin "old_data[13]"
@@ -247,16 +273,16 @@ Warning: Design contains 24 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "old_wr"
     Warning (15610): No output dependent on input pin "old_rd"
     Warning (15610): No output dependent on input pin "old_rst"
-    Warning (15610): No output dependent on input pin "clk"
     Warning (15610): No output dependent on input pin "pd3"
     Warning (15610): No output dependent on input pin "pd4"
-Info: Implemented 46 device resources after synthesis - the final resource count might be different
+Info: Implemented 462 device resources after synthesis - the final resource count might be different
     Info: Implemented 24 input pins
     Info: Implemented 22 output pins
-Info: Quartus II Analysis & Synthesis was successful. 0 errors, 55 warnings
-    Info: Peak virtual memory: 179 megabytes
-    Info: Processing ended: Wed Mar 04 17:58:22 2015
-    Info: Elapsed time: 00:00:01
-    Info: Total CPU time (on all processors): 00:00:01
+    Info: Implemented 416 logic cells
+Info: Quartus II Analysis & Synthesis was successful. 0 errors, 28 warnings
+    Info: Peak virtual memory: 188 megabytes
+    Info: Processing ended: Fri Mar 06 18:00:03 2015
+    Info: Elapsed time: 00:00:04
+    Info: Total CPU time (on all processors): 00:00:04
 
 

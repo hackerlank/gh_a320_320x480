@@ -1,0 +1,10 @@
+
+State Machine - |a320hd|state
+Name state.delay state.gui_draw_color state.gui_set_pos state.init state.powerup3 state.powerup2 state.powerup1 
+state.powerup1 0 0 0 0 0 0 0 
+state.powerup2 0 0 0 0 0 1 1 
+state.powerup3 0 0 0 0 1 0 1 
+state.init 0 0 0 1 0 0 1 
+state.gui_set_pos 0 0 1 0 0 0 1 
+state.gui_draw_color 0 1 0 0 0 0 1 
+state.delay 1 0 0 0 0 0 1 
